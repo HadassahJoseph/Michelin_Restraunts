@@ -58,6 +58,7 @@ ALLOWED_HOSTS = ['michelinstar.online', 'www.michelinstar.online', '13.48.156.49
 
 
 
+
 # Application definition
 
 INSTALLED_APPS = [
