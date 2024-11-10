@@ -17,8 +17,6 @@ import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-import os
-
 # Define potential paths for GDAL library
 potential_gdal_paths = [
     r"C:\Users\C21382216\AppData\Local\anaconda3\envs\awm_env\Library\bin\gdal.dll",
@@ -51,7 +49,7 @@ SECRET_KEY = 'django-insecure-wsj5l=$b!i)22&)(-u@)qg0abp&$(h!97n=pjvji%h8pzpp!ab
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['13.48.156.49, localhost', '127.0.0.1']
 
 
 
@@ -173,8 +171,8 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     BASE_DIR / "location_app" / "static",  # This points to 'location_app/static'
 ]
-STATIC_ROOT = BASE_DIR / 'static'  # Where collected static files will go
-
+# STATIC_ROOT = BASE_DIR / 'static'  # Where collected static files will go
+STATIC_ROOT = os.path.join[ BASE_DIR / 'static']
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
