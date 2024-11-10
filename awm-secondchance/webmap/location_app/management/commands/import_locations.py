@@ -9,7 +9,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **kwargs):
         # Specify the path to your cleaned CSV file
-        with open(r'C:\Users\C21382216\OneDrive - Technological University Dublin\Desktop\awm-secondchance\CSV\cleaned_michelin_restaurants.csv', mode='r') as file:
+        with open(r'CSV\cleaned_michelin_restaurants.csv', mode='r') as file:
             reader = csv.DictReader(file)  # Use DictReader to handle CSV headers as field names
 
             for row in reader:
