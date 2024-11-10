@@ -52,7 +52,8 @@ SECRET_KEY = 'django-insecure-wsj5l=$b!i)22&)(-u@)qg0abp&$(h!97n=pjvji%h8pzpp!ab
 DEBUG = True
 
 # ALLOWED_HOSTS = ['13.48.156.49, localhost', '127.0.0.1']
-ALLOWED_HOSTS = ['13.48.156.49', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['michelinstar.online', 'www.michelinstar.online', '13.48.156.49', 'localhost', '127.0.0.1']
+
 
 
 
