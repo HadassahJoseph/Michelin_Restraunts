@@ -10,6 +10,8 @@ class Command(BaseCommand):
     def handle(self, *args, **kwargs):
         # Specify the path to your cleaned CSV file
         with open('/home/ubuntu/Michelin_Restraunts/awm-secondchance/CSV/cleaned_michelin_restaurants.csv', mode='r') as file:
+            reader = csv.DictReader(file)  # Use DictReader to handle CSV headers as field names
+
             for row in reader:
                 # Extract the relevant columns from the CSV
                 name = row['name']
