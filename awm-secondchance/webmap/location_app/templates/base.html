@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Michelin Restaurant Guide</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+</head>
+<body class="map-page">
+
+    <!-- Hero Section with Background Image -->
+    <header class="hero">
+        <div class="hero-content">
+            <h1>Explore Michelin-Starred Restaurants</h1>
+            <p>Discover culinary excellence from around the world</p>
+            <div class="scroll-arrow">&#8595;</div>
+        </div>
+    </header>
+
+    <!-- About Section with Text and Image Gallery -->
+    <section class="about">
+        <div class="about-text">
+            <h2>About Michelin Restaurants</h2>
+            <p>Michelin-starred restaurants represent the pinnacle of culinary achievement. Awarded for excellence in flavor, technique, and presentation, these dining experiences set the standard for gastronomy worldwide. Explore our selection of restaurants offering a wide array of cuisines, ambiance, and cultural experiences.</p>
+        </div>
+        <div class="about-gallery">
+            <img src="{% static 'images/pic1.png' %}" alt="Dish 1">
+            <img src="{% static 'images/pic2.jpg' %}" alt="Dish 2">
+            <img src="{% static 'images/pic3.jpg' %}" alt="Dish 3">
+            <img src="{% static 'images/pic4.jpg' %}" alt="Dish 4">
+        </div>
+    </section>
+
+    <!-- Video Gallery Section -->
+    <section class="video-gallery">
+        <h2>Experience the Ambiance</h2>
+        <div class="video-container">
+            <iframe width="600" height="600" src="https://www.youtube.com/embed/wjecqwyoX2A?si=tW9yj-vcrOr4pB0m" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        </div>
+    </section>
+
+   <!-- Map Section -->
+   <section class="map-container">
+    <h2>Find Michelin Restaurants Near You</h2>
+    <div id="map"></div>
+
+    <!-- Star Filter Buttons -->
+    <div class="star-filter">
+        <button onclick="findClosestRestaurant(1)">1 Star</button>
+        <button onclick="findClosestRestaurant(2)">2 Stars</button>
+        <button onclick="findClosestRestaurant(3)">3 Stars</button>
+    </div>
+</section>
+
+<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+<script>
+    // Initialize the map with a default center
+    var map = L.map('map').setView([47.0, 13.0], 6);
+    
+    // Add OpenStreetMap tiles
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(map);
+
+    // Geolocation for user's location
+    var userLat, userLon;
+
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function(position) {
+            userLat = position.coords.latitude;
+            userLon = position.coords.longitude;
+            map.setView([userLat, userLon], 13);
+            L.marker([userLat, userLon]).addTo(map).bindPopup("You are here");
+        });
+    }
+
+    // Restaurant data with star ratings (this is your loop data)
+    var restaurants = [
+        {% for location in locations %}
+        {
+            lat: {{ location.latitude }},
+            lon: {{ location.longitude }},
+            name: "{{ location.name }}",
+            year: "{{ location.year }}",
+            city: "{{ location.city }}",
+            region: "{{ location.region }}",
+            cuisine: "{{ location.cuisine }}",
+            star_level: {{ location.star_level }},
+        },
+        {% endfor %}
+    ];
+
+    // Create markers with different colors based on star level
+    var markers = [];
+    var starColors = {
+        1: 'green',
+        2: 'orange',
+        3: 'red'
+    };
+
+    restaurants.forEach(function(restaurant) {
+        var color = starColors[restaurant.star_level] || 'blue';
+        var marker = L.marker([restaurant.lat, restaurant.lon], { icon: L.icon({ iconUrl: `https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png`, iconSize: [25, 41], iconAnchor: [12, 41], popupAnchor: [1, -34], shadowSize: [41, 41], }) })
+            .addTo(map)
+            .bindPopup("<b>" + restaurant.name + "</b><br>Year: " + restaurant.year + "<br>City: " + restaurant.city + "<br>Region: " + restaurant.region + "<br>Cuisine: " + restaurant.cuisine + "<br>Star Level: " + restaurant.star_level);
+        marker.star_level = restaurant.star_level;
+        markers.push(marker);
+    });
+
+    // Function to calculate the distance between two lat/lon points (in km)
+    function getDistance(lat1, lon1, lat2, lon2) {
+        var R = 6371; // Radius of the Earth in km
+        var dLat = (lat2 - lat1) * Math.PI / 180;
+        var dLon = (lon2 - lon1) * Math.PI / 180;
+        var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) + Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * Math.sin(dLon / 2) * Math.sin(dLon / 2);
+        var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        var distance = R * c; // Distance in km
+        return distance;
+    }
+
+    // Function to find the closest restaurant of a given star level
+    function findClosestRestaurant(starLevel) {
+        var closestRestaurant = null;
+        var closestDistance = Infinity;
+
+        markers.forEach(function(marker) {
+            if (marker.star_level === starLevel) {
+                var distance = getDistance(userLat, userLon, marker.getLatLng().lat, marker.getLatLng().lng);
+                if (distance < closestDistance) {
+                    closestRestaurant = marker;
+                    closestDistance = distance;
+                }
+            }
+        });
+
+        if (closestRestaurant) {
+            map.setView(closestRestaurant.getLatLng(), 15); // Zoom to closest restaurant
+            closestRestaurant.openPopup();
+        } else {
+            alert("No restaurant found for the selected star level.");
+        }
+    }
+</script>
+</body>
+</html>
