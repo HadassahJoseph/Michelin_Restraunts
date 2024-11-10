@@ -1,0 +1,52 @@
+services:
+  nginx:
+    image: nginx:latest
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d
+    depends_on:
+      - location_app
+
+  pgadmin:
+    image: dpage/pgadmin4
+    ports:
+      - "20080:80"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: hadassah.joseph@tudublin.ie
+      PGADMIN_DEFAULT_PASSWORD: 2005Joseph
+    volumes:
+     - ./pgadmin:/var/lib/pgadmin
+    depends_on:
+      - postgis
+
+  postgis:
+    image: postgis/postgis
+    environment:
+      POSTGRES_DB: gis
+      POSTGRES_USER: docker
+      POSTGRES_PASSWORD: new_password
+    volumes:
+     - ./postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U docker"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  location_app:
+    ports:
+      - "8000:80"
+    build: ./location_app
+    command: uwsgi --ini /app/uwsgi.ini
+    volumes:
+      - ./location_app:/app
+    # environment:
+    #   DATABASE_HOST: postgis
+    #   DATABASE_PORT: 5432
+    #   DATABASE_NAME: gis
+    #   DATABASE_USER: docker
+    #   DATABASE_PASSWORD: new_password
+    depends_on:
+      postgis:
+        condition: service_healthy
