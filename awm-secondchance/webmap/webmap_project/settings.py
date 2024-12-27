@@ -170,18 +170,38 @@ USE_I18N = True
 USE_TZ = True
 
 
+# # Static files (CSS, JavaScript, Images)
+# # https://docs.djangoproject.com/en/4.1/howto/static-files/
+# STATIC_URL = '/static/'
+# # Only one definition of STATICFILES_DIRS
+# STATICFILES_DIRS = [
+#     BASE_DIR / "location_app" / "static",  # This points to 'location_app/static'
+# ]
+# # STATIC_ROOT = BASE_DIR / 'static'  # Where collected static files will go
+# STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
-STATIC_URL = '/static/'
-# Only one definition of STATICFILES_DIRS
+
+STATIC_URL = '/static/'  # Base URL for serving static files
+
+# Directories containing static files for development
 STATICFILES_DIRS = [
-    BASE_DIR / "location_app" / "static",  # This points to 'location_app/static'
+    BASE_DIR / "webmap" / "static",  # Global static files (admin CSS/JS and shared resources)
+    BASE_DIR / "webmap" / "location_app" / "static",  # Static files for the location app
 ]
-# STATIC_ROOT = BASE_DIR / 'static'  # Where collected static files will go
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
+# Directory where static files will be collected for production
+STATIC_ROOT = BASE_DIR / "collected_static"
+
 
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Login and Redirect Settings
+LOGIN_URL = '/login/'  # Redirect unauthenticated users to this URL
+LOGIN_REDIRECT_URL = '/'  # Redirect authenticated users to this URL after login
