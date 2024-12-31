@@ -69,8 +69,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'location_app',
-    'pwa'
     'django_extensions',
+    'pwa'
 ]
 
 MIDDLEWARE = [
