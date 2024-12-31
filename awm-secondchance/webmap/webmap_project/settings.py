@@ -188,8 +188,8 @@ STATIC_URL = '/static/'  # Base URL for serving static files
 
 # Directories containing static files for development
 STATICFILES_DIRS = [
-    BASE_DIR / "webmap" / "static",  # Global static files (admin CSS/JS and shared resources)
-    BASE_DIR / "webmap" / "location_app" / "static",  # Static files for the location app
+    BASE_DIR / "static",  # Global static files (admin CSS/JS and shared resources)
+    BASE_DIR / "location_app" / "static",  # Static files for the location app
 ]
 
 # Directory where static files will be collected for production
