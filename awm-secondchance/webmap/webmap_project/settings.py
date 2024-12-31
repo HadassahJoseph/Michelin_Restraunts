@@ -69,6 +69,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'location_app',
+    'pwa'
+    'django_extensions',
 ]
 
 MIDDLEWARE = [
@@ -205,3 +207,31 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Login and Redirect Settings
 LOGIN_URL = '/login/'  # Redirect unauthenticated users to this URL
 LOGIN_REDIRECT_URL = '/'  # Redirect authenticated users to this URL after login
+
+
+PWA_APP_NAME = 'Michelin Restaurants'
+PWA_APP_DESCRIPTION = 'Discover Michelin-starred restaurants with ease.'
+PWA_APP_THEME_COLOR = '#1d3247'
+PWA_APP_BACKGROUND_COLOR = '#ffffff'
+PWA_APP_DISPLAY = 'standalone'
+PWA_APP_SCOPE = '/'
+PWA_APP_START_URL = '/'
+PWA_APP_ICONS = [
+    {
+        'src': '/static/images/icons/icon1.png',
+        'sizes': '192x192',
+    },
+    {
+        'src': '/static/images/icons/icon2.png',
+        'sizes': '512x512',
+    },
+]
+PWA_APP_SPLASH_SCREEN = [
+    {
+        'src': '/static/images/icons/icon3.png',
+        'media': '(device-width: 414px) and (device-height: 896px)',
+    },
+    ...
+]
+PWA_APP_DIR = 'ltr'
+PWA_APP_LANG = 'en-US'

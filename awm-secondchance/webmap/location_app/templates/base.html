@@ -7,6 +7,18 @@
     {% load static %}
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <link rel="manifest" href="{% static 'manifest.json' %}">
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register("{% static 'js/serviceworker.js' %}")
+                .then(function(registration) {
+                    console.log('ServiceWorker registration successful:', registration.scope);
+                })
+                .catch(function(error) {
+                    console.log('ServiceWorker registration failed:', error);
+                });
+        }
+    </script>
 </head>
 <body class="map-page">
 
