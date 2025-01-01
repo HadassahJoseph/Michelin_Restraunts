@@ -1,56 +1,299 @@
-/* Basic Reset */
-* {
+/* General Page Styling */
+body, html {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    font-family: 'Arial', sans-serif;
+    color: #333;
+   
 }
 
-/* Full-page background */
-.background-image {
-    height: 100vh;
-    background: url('https://example.com/your-image.jpg') no-repeat center center/cover;
+/* Hero Section */
+.hero {
+    background-image: url('/static/images/background.jpg');
+    background-size: cover;
+    background-position: center;
+    color: #fff;
+    padding: 100px 20px;
+    text-align: center;
+    position: relative;
+    height: 100vh; /* Full viewport height */
+    display: flex;
+    align-items: center; /* Center content vertically */
+    justify-content: center; /* Center content horizontally */
+}
+
+.hero-content {
+    max-width: 800px; /* Restrict the width for better readability on large screens */
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.5); /* Optional: slight overlay for readability */
+    border-radius: 8px;
+}
+
+
+.hero-content h1 {
+    font-size: 3em;
+    margin: 0;
+}
+
+.hero-content p {
+    font-size: 1.5em;
+}
+
+.scroll-arrow {
+    font-size: 2em;
+    margin-top: 20px;
+    animation: bounce 1.5s infinite;
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(10px); }
+}
+
+/* About Section */
+.about {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 50px 20px;
+    background-color: #1d3247;
+}
+
+.about-text {
+    flex: 1;
+    padding: 20px;
+    max-width: 600px;
+    color:antiquewhite
+}
+
+.about-gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); /* Responsive columns */
+    gap: 15px;
+    justify-content: center;
+    padding: 20px;
+}
+
+.about-gallery img {
+    width: 100%; /* Make the images responsive */
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.about-gallery img:hover {
+    transform: scale(1.05);
+}
+
+
+/* Video Gallery Section */
+/* .video-gallery {
+    text-align: center;
+    padding: 50px 20px;
+    background-color: #fafafa;
+}
+
+.video-gallery h2 {
+    font-size: 2em;
+    margin-bottom: 20px;
+} */
+
+
+
+/* .video-carousel {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+} */
+
+/* .carousel-button {
+    background-color: transparent;
+    border: none;
+    font-size: 2em;
+    color: #333;
+    cursor: pointer;
+}
+
+
+
+.carousel-videos {
+    display: flex;
+    overflow: hidden;
+    width: 80%; 
+    max-width: 600px;
+    margin: auto;
+}
+
+.carousel-videos iframe {
+    width: 100%;
+    height: auto;
+    transition: transform 0.5s ease;
+} */
+
+/* .carousel-videos video {
+    width: 300px;
+    height: auto;
+    transition: transform 0.5s ease;
+} */
+
+
+/* Video Gallery Section */
+.video-gallery {
+    text-align: center;
+    padding: 40px 20px;
+}
+
+.video-gallery h2 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+}
+
+.video-container {
     display: flex;
     justify-content: center;
     align-items: center;
-    color: white;
-    text-align: center;
+    max-width: 100%;
 }
 
-/* Content inside the background */
-.content h1 {
-    font-size: 3rem;
-    margin-bottom: 1rem;
-}
-
-.content p {
-    font-size: 1.5rem;
-}
-
-/* Section styles */
-section {
-    padding: 2rem;
-    background-color: #f4f4f4;
-    margin-top: -3rem; /* Pull up the section for a seamless transition */
-    text-align: center;
-}
-
-section h2 {
-    font-size: 2.5rem;
-    margin-bottom: 1rem;
-}
-
-section p {
-    font-size: 1.2rem;
-    line-height: 1.6;
-}
-
-/* Map section */
-#map {
-    height: 500px;
+.video-container iframe {
     width: 100%;
+    max-width: 1000px;  /* Increase the max-width to make the iframe larger */
+    height: 600px;      /* Set a fixed height to make the video taller */
+    border-radius: 8px;
 }
 
-/* Smooth scrolling */
-html {
-    scroll-behavior: smooth;
+
+
+/* Map Section */
+.map-container {
+    padding: 50px 20px;
+    background-color: #fff;
+    text-align: center;
+}
+
+#map {
+    width: 100%;
+    height: 500px;
+    border-radius: 10px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.star-filter {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.star-filter button {
+    padding: 10px 20px;
+    margin: 0 10px;
+    font-size: 1rem;
+    cursor: pointer;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.star-filter button:hover {
+    background-color: #f1f1f1;
+}
+
+
+
+
+@media (max-width: 768px) {
+    .hero-content h1 {
+        font-size: 2em;
+    }
+
+    .hero-content p {
+        font-size: 1.2em;
+    }
+
+    .about, .video-gallery {
+        flex-direction: column;
+    }
+
+    .carousel-videos {
+        width: 100%;
+    }
+
+    #map {
+        height: 400px;
+    }
+}
+
+/* General Form Styling */
+form {
+    max-width: 400px; /* Set a max-width for forms */
+    margin: 50px auto; /* Center the form on the page */
+    padding: 20px;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Form Heading */
+form h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+    font-size: 1.8em;
+}
+
+/* Input Fields */
+form input[type="text"],
+form input[type="email"],
+form input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1rem;
+    box-sizing: border-box;
+}
+
+form input:focus {
+    border-color: #007bff;
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+/* Buttons */
+form button {
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff;
+    border: none;
+    color: #fff;
+    font-size: 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+form button:hover {
+    background-color: #0056b3;
+}
+
+/* Links */
+form a {
+    display: block;
+    text-align: center;
+    margin-top: 10px;
+    color: #007bff;
+    text-decoration: none;
+}
+
+form a:hover {
+    text-decoration: underline;
+}
+
+/* Mobile Responsive Styling */
+@media (max-width: 768px) {
+    form {
+        width: 90%; /* Make the form take up more space on smaller screens */
+    }
 }

@@ -5,11 +5,53 @@ from django.contrib import messages
 from location_app.models import Location
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
+from django.http import JsonResponse
 
 
 # def location_map(request):
 #     # Retrieve all locations from the database
 #     locations = Location.objects.all()
+def manifest(request):
+    manifest_data = {
+        "name": "Michelin Restaurants",
+        "short_name": "Michelin",
+        "description": "Discover Michelin-starred restaurants with ease.",
+        "theme_color": "#1d3247",
+        "background_color": "#ffffff",
+        "display": "standalone",
+        "start_url": "/",
+        "id": "/", 
+        "icons": [
+            # {
+            #     "src": "/static/images/icons/icon1.png",
+            #     "sizes": "192x192",
+            #     "type": "image/png"
+            # },
+            {
+                "src": "/static/images/icons/icon2.png",
+                "sizes": "512x512",
+                "type": "image/png"
+            }
+        ],
+
+        "screenshots": [
+            {
+                "src": "static/images/screenshots/screenshot1.png", 
+                "sizes": "1280x720",
+                "type": "image/png",
+                "form_factor": "narrow"
+            },    
+            {
+                "src": "static/images/screenshots/screenshot1.png", 
+                "sizes": "1280x720",
+                "type": "image/png",
+                "form_factor": "wide"
+            }         
+        ],
+    }
+    response = JsonResponse(manifest_data)
+    return response 
+
 
 @login_required
 def location_map(request):

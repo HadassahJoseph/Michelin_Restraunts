@@ -231,7 +231,11 @@ PWA_APP_SPLASH_SCREEN = [
         'src': '/static/images/icons/icon3.png',
         'media': '(device-width: 414px) and (device-height: 896px)',
     },
-    ...
+    {
+        'src': '/static/images/icons/icon4.png',
+        'media': '(device-width: 375px) and (device-height: 667px)',
+    }
 ]
+
 PWA_APP_DIR = 'ltr'
 PWA_APP_LANG = 'en-US'

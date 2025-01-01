@@ -1,8 +1,10 @@
 const CACHE_NAME = 'michelin-cache-v1';
 const urlsToCache = [
   '/',
-  '/static/css/styles.css',
-  '/static/js/scripts.js',
+  '/manifest.json',  // Dynamic manifest
+  '/static/images/icons/icon2.png',
+  "static/images/screenshots/screenshot1.png", 
+  '/location_app',
   // Add other static assets here
 ];
 
