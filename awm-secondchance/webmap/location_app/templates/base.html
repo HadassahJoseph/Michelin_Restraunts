@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Michelin Restaurant Guide</title>
     {% load static %}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
     <link rel="manifest" href="/manifest.json">
@@ -19,58 +20,121 @@
 </head>
 <body class="map-page">
 
-    <nav>
-        <ul>
-          <li><a href="{% url 'location_app:profile' %}">Profile</a></li>
-          <li><a href="{% url 'location_app:logout' %}">Logout</a></li>
-        </ul>
-      </nav>
-
-    <!-- Hero Section with Background Image -->
-    <header class="hero">
-        <div class="hero-content">
-            <h1>Explore Michelin-Starred Restaurants</h1>
-            <p>Discover culinary excellence from around the world</p>
-            <div class="scroll-arrow">&#8595;</div>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="{% url 'location_app:location_map' %}">
+            Michelin Restaurant Guide
+          </a>
+          <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
+      
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'location_app:profile' %}">Profile</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'location_app:logout' %}">Logout</a>
+              </li>
+            </ul>
+          </div>
         </div>
-    </header>
+      </nav>
+      
+    <!-- Hero Section with Background Image -->
+    <header class="hero mb-5">
+        <div class="hero-content text-center">
+          <h1 class="display-3">Explore Michelin-Starred Restaurants</h1>
+          <p class="lead">Discover culinary excellence from around the world</p>
+          <div class="scroll-arrow">&#8595;</div>
+        </div>
+      </header>
+      
 
     <!-- About Section with Text and Image Gallery -->
-    <section class="about">
-        <div class="about-text">
-            <h2>About Michelin Restaurants</h2>
-            <p>Michelin-starred restaurants represent the pinnacle of culinary achievement. Awarded for excellence in flavor, technique, and presentation, these dining experiences set the standard for gastronomy worldwide. Explore our selection of restaurants offering a wide array of cuisines, ambiance, and cultural experiences.</p>
+    <section class="about py-5">
+        <div class="container">
+          <div class="row">
+            <div class="col-md-6 about-text">
+              <h2>About Michelin Restaurants</h2>
+              <p>
+                Michelin-starred restaurants represent the pinnacle of culinary achievement...
+              </p>
+            </div>
+            <div class="col-md-6 about-gallery">
+              <!-- Your images as before -->
+              <img src="{% static 'images/pic1.png' %}" alt="Dish 1" />
+              <img src="{% static 'images/pic2.jpg' %}" alt="Dish 2" />
+              <img src="{% static 'images/pic3.jpg' %}" alt="Dish 3" />
+              <img src="{% static 'images/pic4.jpg' %}" alt="Dish 4" />
+            </div>
+          </div>
         </div>
-        <div class="about-gallery">
-            <img src="{% static 'images/pic1.png' %}" alt="Dish 1">
-            <img src="{% static 'images/pic2.jpg' %}" alt="Dish 2">
-            <img src="{% static 'images/pic3.jpg' %}" alt="Dish 3">
-            <img src="{% static 'images/pic4.jpg' %}" alt="Dish 4">
-        </div>
-    </section>
+      </section>
+      
 
     <!-- Video Gallery Section -->
-    <section class="video-gallery">
-        <h2>Experience the Ambiance</h2>
-        <div class="video-container">
+    <section class="video-gallery py-5">
+        <div class="container">
+          <h2 class="mb-4">Experience the Ambiance</h2>
+          <div class="video-container">
             <iframe width="600" height="600" src="https://www.youtube.com/embed/wjecqwyoX2A?si=tW9yj-vcrOr4pB0m" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+          </div>
         </div>
-    </section>
+      </section>
+      
 
    <!-- Map Section -->
-   <section class="map-container">
-    <h2>Find Michelin Restaurants Near You</h2>
-    <div id="map"></div>
-
-    <!-- Star Filter Buttons -->
-    <div class="star-filter">
-        <button onclick="findClosestRestaurant(1)">1 Star</button>
-        <button onclick="findClosestRestaurant(2)">2 Stars</button>
-        <button onclick="findClosestRestaurant(3)">3 Stars</button>
+   <section class="map-container py-5">
+    <div class="container">
+      <h2 class="mb-4 text-center">Find Michelin Restaurants Near You</h2>
+  
+      <!-- Filter Dropdowns -->
+      <div class="row mb-3">
+        <div class="col-md-6">
+          <label for="regionSelect" class="form-label">Select Region</label>
+          <select id="regionSelect" class="form-select">
+            <option value="">All Regions</option>
+            <!-- We'll populate real regions dynamically via JS. -->
+          </select>
+        </div>
+        <div class="col-md-6">
+          <label for="cuisineSelect" class="form-label">Select Cuisine</label>
+          <select id="cuisineSelect" class="form-select">
+            <option value="">All Cuisines</option>
+            <!-- We'll populate real cuisines dynamically via JS. -->
+          </select>
+        </div>
+      </div>
+  
+      <button class="btn btn-primary mb-3" onclick="applyFilter()">Apply Filter</button>
+  
+      <div id="map" class="mb-3"></div>
+  
+      <div class="star-filter text-center">
+        <button class="btn btn-outline-primary me-2" onclick="findClosestRestaurant(1)">1 Star</button>
+        <button class="btn btn-outline-warning me-2" onclick="findClosestRestaurant(2)">2 Stars</button>
+        <button class="btn btn-outline-danger" onclick="findClosestRestaurant(3)">3 Stars</button>
+      </div>
     </div>
-</section>
-
+  </section>
+  
+  
 <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+<script
+  src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+  integrity="sha384-S67I2n1mZ2yGf6v/R39qXncQ/F2kSN8PXyOdlt+H02DpvGPJHQgOcbdDJscKDx0W"
+  crossorigin="anonymous"
+></script>
 <script>
     // Initialize the map with a default center
     var map = L.map('map').setView([47.0, 13.0], 6);
@@ -104,9 +168,34 @@
             region: "{{ location.region }}",
             cuisine: "{{ location.cuisine }}",
             star_level: {{ location.star_level }},
+            id: {{ location.id }},
         },
         {% endfor %}
     ];
+
+    // 1) Gather unique regions
+    var uniqueRegions = [...new Set(restaurants.map(r => r.region))].sort();
+    // 2) Gather unique cuisines
+    var uniqueCuisines = [...new Set(restaurants.map(r => r.cuisine))].sort();
+
+    // Populate the regionSelect options
+    var regionSelect = document.getElementById("regionSelect");
+    uniqueRegions.forEach(region => {
+    var option = document.createElement("option");
+    option.value = region;
+    option.textContent = region;
+    regionSelect.appendChild(option);
+    });
+
+    // Populate the cuisineSelect options
+    var cuisineSelect = document.getElementById("cuisineSelect");
+    uniqueCuisines.forEach(cuisine => {
+    var option = document.createElement("option");
+    option.value = cuisine;
+    option.textContent = cuisine;
+    cuisineSelect.appendChild(option);
+    });
+    
 
     // Create markers with different colors based on star level
     var markers = [];
@@ -120,8 +209,19 @@
         var color = starColors[restaurant.star_level] || 'blue';
         var marker = L.marker([restaurant.lat, restaurant.lon], { icon: L.icon({ iconUrl: `https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png`, iconSize: [25, 41], iconAnchor: [12, 41], popupAnchor: [1, -34], shadowSize: [41, 41], }) })
             .addTo(map)
-            .bindPopup("<b>" + restaurant.name + "</b><br>Year: " + restaurant.year + "<br>City: " + restaurant.city + "<br>Region: " + restaurant.region + "<br>Cuisine: " + restaurant.cuisine + "<br>Star Level: " + restaurant.star_level);
+            // .bindPopup("<b>" + restaurant.name + "</b><br>Year: " + restaurant.year + "<br>City: " + restaurant.city + "<br>Region: " + restaurant.region + "<br>Cuisine: " + restaurant.cuisine + "<br>Star Level: " + restaurant.star_level + "<br>" + "<a href=\"/add-favorite/" + restaurant.id + "/\">Add to Favorites</a>" );
+            .bindPopup(
+            `<b>${restaurant.name}</b><br>
+            Year: ${restaurant.year}<br>
+            City: ${restaurant.city}<br>
+            Region: ${restaurant.region}<br>
+            Cuisine: ${restaurant.cuisine}<br>
+            Star Level: ${restaurant.star_level}<br>
+            <a href="/add-favorite/${restaurant.id}/">Add to Favorites</a>`
+            );
         marker.star_level = restaurant.star_level;
+        marker.region = restaurant.region;
+        marker.cuisine = restaurant.cuisine;
         markers.push(marker);
     });
 
@@ -158,6 +258,66 @@
             alert("No restaurant found for the selected star level.");
         }
     }
+
+
+  function applyFilter() {
+  var selectedRegion = regionSelect.value;   // from <select id="regionSelect">
+  var selectedCuisine = cuisineSelect.value; // from <select id="cuisineSelect">
+
+  // 1) Remove all markers
+  markers.forEach(m => map.removeLayer(m));
+  markers = [];
+
+  // 2) Filter the restaurant data
+  var filtered = restaurants.filter(r => {
+    // If a region is chosen, it must match
+    if (selectedRegion && r.region !== selectedRegion) {
+      return false;
+    }
+    // If a cuisine is chosen, it must match
+    if (selectedCuisine && r.cuisine !== selectedCuisine) {
+      return false;
+    }
+    return true;
+  });
+
+  // 3) Re-add markers for the filtered array
+  filtered.forEach(function(restaurant) {
+    var marker = L.marker([restaurant.lat, restaurant.lon], {
+      icon: L.icon({
+        iconUrl: `https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png`,
+        iconSize: [25, 41],
+        iconAnchor: [12, 41],
+        popupAnchor: [1, -34],
+        shadowSize: [41, 41],
+      })
+    })
+    .addTo(map)
+    .bindPopup(
+      `<b>${restaurant.name}</b><br>
+      Year: ${restaurant.year}<br>
+      City: ${restaurant.city}<br>
+      Region: ${restaurant.region}<br>
+      Cuisine: ${restaurant.cuisine}<br>
+      Star Level: ${restaurant.star_level}<br>
+      <a href="/add-favorite/${restaurant.id}/">Add to Favorites</a>`
+    );
+
+    marker.star_level = restaurant.star_level;
+    markers.push(marker);
+  });
+
+    // 4) After adding all filtered markers to `markers`:
+    if (markers.length > 0) {
+    // Create a Leaflet featureGroup from your markers array
+    var group = L.featureGroup(markers);
+    // Auto-fit the map to the bounding box of these marker positions
+    map.fitBounds(group.getBounds());
+    }
+
+
+}
+
 </script>
 </body>
 </html>

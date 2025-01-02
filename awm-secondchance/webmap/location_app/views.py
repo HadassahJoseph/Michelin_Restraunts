@@ -2,9 +2,10 @@ from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate,login
 from django.contrib import messages
-from location_app.models import Location
+from location_app.models import Location, Favorite
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
+from django.shortcuts import get_object_or_404
 from django.http import JsonResponse
 
 
@@ -62,6 +63,7 @@ def location_map(request):
     for location in locations:
         # Assuming 'latitude' and 'longitude' are stored as separate fields
         locations_json.append({
+            'id': location.id,
             'name': location.name,
             'latitude': location.geom.y,  # Latitude (from PointField)
             'longitude': location.geom.x,  # Longitude (from PointField)
@@ -117,11 +119,41 @@ def login_view(request):
 
 
 def profile_view(request):
-    # The currently logged-in user is available through request.user
+    # Favorites for the logged-in user
+    user_favorites = Favorite.objects.filter(user=request.user).select_related('location')
+
     context = {
         'user': request.user,
+        'favorites': user_favorites,
     }
     return render(request, 'profile.html', context)
+
+
+@login_required
+def add_to_favorites(request, location_id):
+    # Get the location by ID or return 404 if not found
+    location = get_object_or_404(Location, pk=location_id)
+
+    # Check if already favorited
+    existing_favorite = Favorite.objects.filter(user=request.user, location=location).first()
+    if not existing_favorite:
+        # Create a new Favorite record
+        Favorite.objects.create(user=request.user, location=location)
+    
+    # Redirect back to the same page or wherever you want
+    return redirect('location_app:location_map') 
+    # or possibly redirect to the same page you came from
+
+@login_required
+def remove_from_favorites(request, location_id):
+    try:
+        favorite = Favorite.objects.get(user=request.user, location_id=location_id)
+        favorite.delete()
+        messages.success(request, "Removed from favorites.")
+    except Favorite.DoesNotExist:
+        messages.warning(request, "That location is not in your favorites.")
+    return redirect('location_app:profile')
+
 
 
 def logout_view(request):

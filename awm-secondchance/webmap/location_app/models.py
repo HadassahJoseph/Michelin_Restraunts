@@ -1,7 +1,7 @@
+# location_app/models.py
 from django.contrib.gis.db import models
 from django.contrib.gis.geos import Point
-from django.contrib import admin
-
+from django.contrib.auth.models import User
 
 class Location(models.Model):
     name = models.CharField(max_length=255, default="Unknown name")
@@ -18,4 +18,11 @@ class Location(models.Model):
     def __str__(self):
         return self.name
 
-admin.site.register(Location)
+# Define Favorite model after Location, no import needed:
+class Favorite(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    location = models.ForeignKey(Location, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+    
+    def __str__(self):
+        return f"{self.user.username} - {self.location.name}"
