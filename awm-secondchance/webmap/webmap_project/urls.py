@@ -26,6 +26,7 @@ urlpatterns = [
         template_name="serviceworker.js",
         content_type='application/javascript',
     ), name='serviceworker'),
+    path('api/', include('location_app.urls_api')),
     
 
 ]

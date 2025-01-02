@@ -12,8 +12,8 @@
     <script>
         if ('serviceWorker' in navigator) {
           navigator.serviceWorker
-            .register('/static/serviceworker.js', { scope: '/' }) // override the default scope
-            .then(reg => console.log('SW registered with scope:', reg.scope))
+            .register('/serviceworker.js')
+            .then(reg => console.log('SW registered at root:', reg.scope))
             .catch(err => console.log('SW registration failed:', err));
         }
       </script>      
