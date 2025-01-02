@@ -116,6 +116,14 @@ def login_view(request):
     return render(request, 'login.html')
 
 
+def profile_view(request):
+    # The currently logged-in user is available through request.user
+    context = {
+        'user': request.user,
+    }
+    return render(request, 'profile.html', context)
+
+
 def logout_view(request):
     logout(request)
     return redirect('location_app:login')

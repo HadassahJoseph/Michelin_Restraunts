@@ -19,6 +19,13 @@
 </head>
 <body class="map-page">
 
+    <nav>
+        <ul>
+          <li><a href="{% url 'location_app:profile' %}">Profile</a></li>
+          <li><a href="{% url 'location_app:logout' %}">Logout</a></li>
+        </ul>
+      </nav>
+
     <!-- Hero Section with Background Image -->
     <header class="hero">
         <div class="hero-content">
@@ -61,7 +68,6 @@
         <button onclick="findClosestRestaurant(2)">2 Stars</button>
         <button onclick="findClosestRestaurant(3)">3 Stars</button>
     </div>
-    <a href="{% url 'location_app:logout' %}">Logout</a>
 </section>
 
 <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>

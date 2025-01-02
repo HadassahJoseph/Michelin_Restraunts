@@ -1,0 +1,31 @@
+{% load static %}  
+<!-- location_app/templates/location_app/profile.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>User Profile</title>
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+  <header>
+    <h1>Welcome to Your Profile, {{ user.username }}!</h1>
+  </header>
+
+  <section>
+    <p><strong>Username:</strong> {{ user.username }}</p>
+    <p><strong>Email:</strong> {{ user.email }}</p>
+    <p><strong>First Name:</strong> {{ user.first_name }}</p>
+    <p><strong>Last Name:</strong> {{ user.last_name }}</p>
+    
+    <!-- You can display any other user fields here -->
+  </section>
+
+  <footer>
+    <!-- Link to Logout -->
+    <a href="{% url 'location_app:logout' %}">Logout</a>
+    <!-- Or a link back to your map/home page -->
+    <a href="{% url 'location_app:location_map' %}">Back to Home</a>
+  </footer>
+</body>
+</html>
