@@ -11,8 +11,9 @@ urlpatterns = [
     path('login/', views.login_view, name='login'),
     path('logout/', views.logout_view, name='logout'),
     path('profile/', views.profile_view, name='profile'),
-    path('manifest.json', views.manifest, name='manifest'),
-    path('add-favorite/<int:location_id>/', views.add_to_favorites, name='add_to_favorites'),
+    # path('manifest.json', views.manifest, name='manifest'),
+    # path('add-favorite/<int:location_id>/', views.add_to_favorites, name='add_to_favorites'),
+    path('ajax/add-favorite/', views.add_to_favorites_ajax, name='add_to_favorites_ajax'),
     path('remove_favorite/<int:location_id>/', views.remove_from_favorites, name='remove_favorite'),
 ]
 

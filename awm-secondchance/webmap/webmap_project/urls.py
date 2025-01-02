@@ -27,6 +27,8 @@ urlpatterns = [
         content_type='application/javascript',
     ), name='serviceworker'),
     path('api/', include('location_app.urls_api')),
+    path('manifest.json', TemplateView.as_view(template_name='manifest.json', content_type='application/json'), name='manifest.json'),
     
 
 ]
+

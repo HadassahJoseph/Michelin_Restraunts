@@ -110,7 +110,11 @@ REST_FRAMEWORK = {
     ]
 }
 
-# Database
+# At the end of settings.py or in a secure location
+OPENROUTESERVICE_API_KEY = '5b3ce3597851110001cf6248c77a395fe7b14f938e279292dada0147'
+
+
+# Database5b3ce3597851110001cf6248c77a395fe7b14f938e279292dada0147
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
 # DATABASES = {

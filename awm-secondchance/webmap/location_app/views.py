@@ -6,7 +6,9 @@ from location_app.models import Location, Favorite
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 from django.shortcuts import get_object_or_404
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponseBadRequest
+from django.views.decorators.http import require_POST
+from django.contrib.auth.decorators import login_required
 
 
 # def location_map(request):
@@ -129,20 +131,37 @@ def profile_view(request):
     return render(request, 'profile.html', context)
 
 
-@login_required
-def add_to_favorites(request, location_id):
-    # Get the location by ID or return 404 if not found
-    location = get_object_or_404(Location, pk=location_id)
+# @login_required
+# def add_to_favorites(request, location_id):
+#     # Get the location by ID or return 404 if not found
+#     location = get_object_or_404(Location, pk=location_id)
 
-    # Check if already favorited
-    existing_favorite = Favorite.objects.filter(user=request.user, location=location).first()
-    if not existing_favorite:
-        # Create a new Favorite record
-        Favorite.objects.create(user=request.user, location=location)
+#     # Check if already favorited
+#     existing_favorite = Favorite.objects.filter(user=request.user, location=location).first()
+#     if not existing_favorite:
+#         # Create a new Favorite record
+#         Favorite.objects.create(user=request.user, location=location)
     
-    # Redirect back to the same page or wherever you want
-    return redirect('location_app:location_map') 
-    # or possibly redirect to the same page you came from
+#     # Redirect back to the same page or wherever you want
+#     return redirect('location_app:location_map') 
+#     # or possibly redirect to the same page you came from
+
+
+@login_required
+@require_POST  # only allow POST
+def add_to_favorites_ajax(request):
+    location_id = request.POST.get('location_id')
+    if not location_id:
+        return HttpResponseBadRequest("No location_id provided")
+
+    # Get or create the favorite
+    try:
+        location = Location.objects.get(id=location_id)
+        Favorite.objects.get_or_create(user=request.user, location=location)
+        return JsonResponse({"success": True, "message": "Favorite added!"})
+    except Location.DoesNotExist:
+        return JsonResponse({"success": False, "message": "Location not found."})
+
 
 @login_required
 def remove_from_favorites(request, location_id):

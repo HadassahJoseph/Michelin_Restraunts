@@ -21,6 +21,31 @@
       <form method="POST" class="p-4 shadow">
         {% csrf_token %}
         <h2 class="text-center mb-4">Signup</h2>
+
+        <div class="mb-3">
+            <label for="firstname" class="form-label">Firstname</label>
+            <input
+              type="text"
+              name="firstname"
+              id="firstname"
+              class="form-control"
+              placeholder="Firstname"
+              required
+            />
+        </div>
+        
+
+        <div class="mb-3">
+            <label for="lastname" class="form-label">Lastname</label>
+            <input
+              type="text"
+              name="lastname"
+              id="lastname"
+              class="form-control"
+              placeholder="Lastname"
+              required
+            />
+        </div>
         
         <div class="mb-3">
           <label for="username" class="form-label">Username</label>
